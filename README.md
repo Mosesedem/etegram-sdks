@@ -18,41 +18,73 @@ yarn add etegram-pay
 
 ## Usage
 
-```JSX
-import { payWithEtegram } from 'etegram-pay';
-import { useForm } from 'react-hook-form';
+```tsx
+import { payWithEtegram } from "etegram-pay";
+import { useForm } from "react-hook-form";
 
-export default function CheckoutFormSample(
+type CheckoutForm = {
+  projectID: string;
+  publicKey: string;
+  productPrice: number;
+  email: string;
+  phone: string;
+  firstName: string;
+  lastName: string;
+};
 
-	const {register, handleSubmit} = useForm();
+export default function CheckoutFormSample() {
+  const { register, handleSubmit } = useForm<CheckoutForm>();
 
-	const onSubmit = async (data) => {
-		/* Here you would send the data from your form to the payWithEtegram.*/
+  const onSubmit = async (data: CheckoutForm) => {
+    const payload = {
+      projectID: data.projectID,
+      publicKey: data.publicKey,
+      amount: data.productPrice,
+      email: data.email,
+      phone: data.phone,
+      firstname: data.firstName,
+      lastname: data.lastName,
+      // Lifecycle callbacks
+      onOpen: () => {
+        console.log("Checkout opened");
+      },
+      onSuccess: ({ reference }) => {
+        console.log("onSuccess callback:", reference);
+      },
+      onClose: ({ reference, reason }) => {
+        console.log("onClose callback:", reference, reason);
+      },
 
-         	//You can pass your reference to the function otherwise one will be generated for you
+      // Compatibility aliases (optional): onsuccess / onclose
+      // onsuccess: ({ reference }) => console.log(reference),
+      // onclose: ({ reference, reason }) => console.log(reference, reason),
+    };
 
-            const dataToSubmit = {
-			  projectID: data.projectID,
-			  publicKey: data.publicKey,
-			  amount: data.productPrice,
-			  email: data.email,
-			  phone: data.phone,
-			  firstname: data.firstName,
-			  lastname: data.lastName,
-		}
-      		await payWithEtegram(dataToSubmit);
-	};
-	return (
-	     <form onSubmit={handleSubmit(onSubmit)}>
-	        <div>
-	            <label htmlFor="firstName">FirstName</label>
-	            <input {...register("firstName")} />
-	        </div>
-	        //Rest of your form
-	        ...
+    const result = await payWithEtegram(payload);
+    if (result.status === "success") {
+      console.log("Payment successful:", result.reference);
+      return;
+    }
 
-	        <button>Submit</button>
-	    </form>
-  	)
-)
+    if (result.status === "cancelled") {
+      console.log("Payment cancelled:", result.reference);
+      return;
+    }
+
+    console.log("Payment modal closed:", result.reference);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div>
+        <label htmlFor="firstName">First name</label>
+        <input id="firstName" {...register("firstName")} />
+      </div>
+
+      {/* Rest of your form fields */}
+
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
 ```

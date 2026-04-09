@@ -1,24 +1,55 @@
 {
-  "name": "etegram-pay",
+  "name": "etegram-pay-v2",
   "version": "1.1.5",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "homepage": "",
   "repository": {
     "url": ""
   },
   "scripts": {
-    "build": "tsup"
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "pack:dry-run": "npm pack --dry-run",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "payment-gateway",
     "etegram",
-    "etegram-pay"
+    "etegram-pay-v2",
+    "typescript",
+    "javascript",
+    "sdk",
+    "payment-integration",
+    "checkout",
+    "e-commerce",
+    "online-payments",
+    "payment-processing",
+    "payment-api",
+    "payment-sdk",
+    "payment-initialization",
+    "payment-wrapper",
+    "payment-service",
+    "payment-library",
+    "payment-module"
   ],
   "author": "jesseolisa",
   "license": "ISC",
-  "description": "This is a wrapper to initialize payment with etegram",
+  "description": "This is a javascript SDK for payment with etegram",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "tsup": "^8.2.4",
     "typescript": "^5.5.4"
