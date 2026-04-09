@@ -1,0 +1,26 @@
+{
+  "name": "etegram-pay",
+  "version": "1.1.5",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "homepage": "",
+  "repository": {
+    "url": ""
+  },
+  "scripts": {
+    "build": "tsup"
+  },
+  "keywords": [
+    "payment-gateway",
+    "etegram",
+    "etegram-pay"
+  ],
+  "author": "jesseolisa",
+  "license": "ISC",
+  "description": "This is a wrapper to initialize payment with etegram",
+  "devDependencies": {
+    "tsup": "^8.2.4",
+    "typescript": "^5.5.4"
+  }
+}
