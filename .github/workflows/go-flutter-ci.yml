@@ -1,0 +1,50 @@
+name: Go and Flutter SDK CI
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+
+jobs:
+  go-sdk:
+    name: Go SDK Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/go-sdk
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - name: Test
+        run: go test ./...
+
+  flutter-sdk:
+    name: Flutter SDK Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/flutter-sdk
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.24.0"
+          channel: stable
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Test
+        run: flutter test

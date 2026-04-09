@@ -6,7 +6,9 @@ Last updated: 2026-04-09
 
 - Phase 0: In progress
 - Foundation track (TypeScript hardening of current JS SDK): In progress
-- Multi-SDK scaffolding (Go, Python, Flutter, RN, Kotlin, Swift): Not started
+- Multi-SDK scaffolding (Go, Python, Flutter, RN, Kotlin, Swift): In progress
+- Go SDK production track: Completed
+- Flutter SDK production track: Completed
 
 ## Plan
 
@@ -44,15 +46,20 @@ Last updated: 2026-04-09
 
 4. Start server SDK tracks in parallel
 
-- [ ] Go SDK skeleton + initialize/verify + typed errors
-- [ ] Python SDK skeleton + sync/async clients + typed models
+- [x] Go SDK skeleton + initialize/verify + typed errors
+- [x] Go SDK production hardening (validation, retry policy, webhook verification, tests)
+- [x] Python SDK skeleton + sync/async clients + typed models
 
 5. Begin mobile tracks after foundation release
 
-- [ ] Flutter beta track
-- [ ] React Native beta track
-- [ ] Kotlin beta track
-- [ ] Swift beta track
+- [x] Flutter production package (typed models, client, checkout controller, tests)
+- [ ] React Native beta track (scaffold initialized)
+- [ ] Kotlin beta track (scaffold initialized)
+- [ ] Swift beta track (scaffold initialized)
+
+7. CI enforcement
+
+- [x] Add Go + Flutter CI workflow for analyze/test on PRs and pushes
 
 ## Work Log
 
@@ -76,6 +83,42 @@ Last updated: 2026-04-09
   - added package `exports`, `pack:dry-run`, and `prepublishOnly` scripts
   - added package `files` whitelist to prevent shipping internal planning/source files
 - 2026-04-09: Next up: add strict TypeScript config, tests, and CI gates.
+- 2026-04-09: Started multi-SDK repository build-out:
+  - added shared contract seed file at `specs/canonical-contract.json`
+  - created Go SDK scaffold at `packages/go-sdk` with:
+    - typed request/result models
+    - structured `SDKError`
+    - secure transaction reference generator
+    - initialize and verify client methods
+    - baseline unit tests for reference generation
+  - validated Go scaffold with `go test ./...` (pass)
+  - created Python SDK scaffold at `packages/python-sdk` with:
+    - typed pydantic models
+    - structured `SDKError`
+    - secure transaction reference generator
+    - sync and async clients for initialize/verify
+  - initialized mobile SDK track directories:
+    - `packages/flutter-sdk`
+    - `packages/react-native-sdk`
+    - `packages/kotlin-sdk`
+    - `packages/swift-sdk`
+- 2026-04-09: Completed Go SDK production hardening:
+  - expanded request contract with `currency` and strengthened field validation
+  - added observability fields (`correlationId`) in result and error models
+  - implemented safe retry policy for verify (idempotent GET only) with context-aware backoff
+  - added webhook signature verification helper (HMAC-SHA256)
+  - added comprehensive tests for initialize success, verify retries, retry cancellation, and webhook verification
+  - formatted code with gofmt and validated via `go test ./...` (pass)
+- 2026-04-09: Completed Flutter SDK production package:
+  - added Flutter package manifest and analyzer configuration
+  - implemented typed models, structured SDKError, secure reference generation, initialize client, and checkout controller
+  - implemented deterministic checkout event stream (`open`, `success`, `cancel`, `error`, `close`)
+  - added callback handler for deep-link/web callback mapping
+  - added unit tests for reference generation and callback sequencing
+  - validated quality gates via `flutter analyze` (pass) and `flutter test` (pass)
+- 2026-04-09: Added CI workflow `.github/workflows/go-flutter-ci.yml`:
+  - Go: setup-go + `go test ./...`
+  - Flutter: setup Flutter + `flutter pub get` + `flutter analyze` + `flutter test`
 
 ## Blockers / Decisions Needed
 
