@@ -45,6 +45,11 @@ class InitializePaymentRequest {
           code: 'INVALID_CURRENCY',
           message: 'currency must be a 3-letter ISO code');
     }
+    if (!_isAlphabeticCurrency(currency)) {
+      throw SDKError(
+          code: 'INVALID_CURRENCY',
+          message: 'currency must contain only letters');
+    }
     if (email.trim().isEmpty) {
       throw SDKError(code: 'INVALID_EMAIL', message: 'email is required');
     }
@@ -59,6 +64,20 @@ class InitializePaymentRequest {
       throw SDKError(
           code: 'INVALID_LAST_NAME', message: 'lastName is required');
     }
+    if (callbackUrl != null && callbackUrl!.trim().isNotEmpty) {
+      final Uri? parsed = Uri.tryParse(callbackUrl!);
+      if (parsed == null || !parsed.hasScheme) {
+        throw SDKError(
+            code: 'INVALID_CALLBACK_URL',
+            message: 'callbackUrl must be a valid URI with a scheme');
+      }
+    }
+  }
+
+  static bool _isAlphabeticCurrency(String value) {
+    final String normalized = value.trim().toUpperCase();
+    final RegExp currencyPattern = RegExp(r'^[A-Z]{3}$');
+    return currencyPattern.hasMatch(normalized);
   }
 
   Map<String, Object?> toJson(String resolvedReference) {

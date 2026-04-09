@@ -6,6 +6,8 @@ import 'errors.dart';
 import 'models.dart';
 import 'reference.dart';
 
+const Set<String> _checkoutAllowlist = <String>{'checkout.etegram.com'};
+
 class EtegramClient {
   EtegramClient({
     String baseUrl = 'https://api-checkout.etegram.com',
@@ -75,8 +77,26 @@ class EtegramClient {
       );
     }
 
-    final Uri authorizationUrl = Uri.parse(authUrlValue);
-    if (authorizationUrl.host != 'checkout.etegram.com') {
+    Uri authorizationUrl;
+    try {
+      authorizationUrl = Uri.parse(authUrlValue);
+    } catch (_) {
+      throw SDKError(
+        code: 'CHECKOUT_URL_INVALID',
+        message: 'checkout URL returned by server is invalid',
+        reference: reference,
+      );
+    }
+
+    if (!authorizationUrl.hasScheme || authorizationUrl.scheme != 'https') {
+      throw SDKError(
+        code: 'CHECKOUT_URL_INVALID',
+        message: 'checkout URL must use https',
+        reference: reference,
+      );
+    }
+
+    if (!_checkoutAllowlist.contains(authorizationUrl.host)) {
       throw SDKError(
         code: 'CHECKOUT_URL_NOT_ALLOWED',
         message: 'checkout URL host is not allowlisted',

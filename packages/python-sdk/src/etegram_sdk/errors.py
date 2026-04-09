@@ -11,6 +11,7 @@ class SDKError(Exception):
     http_status: Optional[int] = None
     provider_code: Optional[str] = None
     reference: Optional[str] = None
+    correlation_id: Optional[str] = None
     retryable: bool = False
     details: Any = None
 

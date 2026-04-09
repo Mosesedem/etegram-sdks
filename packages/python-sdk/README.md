@@ -20,6 +20,7 @@ request = InitializePaymentRequest(
     email="user@example.com",
     phone="08012345678",
     amount=5000,
+    currency="NGN",
     firstname="Ada",
     lastname="Lovelace",
 )
@@ -43,6 +44,7 @@ async def run() -> None:
         email="user@example.com",
         phone="08012345678",
         amount=5000,
+        currency="NGN",
         firstname="Ada",
         lastname="Lovelace",
     )

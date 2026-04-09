@@ -1,0 +1,19 @@
+{
+  "name": "@etegram/react-native-sdk",
+  "version": "0.1.0",
+  "description": "Etegram React Native SDK",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "react-native": "src/index.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-native": ">=0.72.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  }
+}

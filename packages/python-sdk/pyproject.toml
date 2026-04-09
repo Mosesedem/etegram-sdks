@@ -21,6 +21,7 @@ dependencies = [
 dev = [
   "pytest>=8.2.0",
   "pytest-asyncio>=0.23.0",
+  "pytest-httpx>=0.30.0",
   "mypy>=1.10.0"
 ]
 

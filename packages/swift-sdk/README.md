@@ -1,17 +1,29 @@
-# Etegram Swift SDK (Scaffold)
+# Etegram Swift SDK
 
-Status: initialized
+Swift Package Manager SDK baseline for Etegram initialize flow.
 
-## Planned deliverables
+## Included in this package
 
-- Swift Package Manager package
-- async/await API plus delegate event callbacks
-- Checkout coordination via ASWebAuthenticationSession/WKWebView
-- Codable request/response models and typed Swift errors
-- SwiftUI sample app and DocC documentation
+- `Package.swift` with iOS/macOS support
+- Codable request and result models
+- `SDKError`
+- Secure reference generation utility
+- `EtegramClient` async initialize implementation with validation and allowlist check
 
-## Next steps
+## Quick usage
 
-1. Create `Package.swift` and source layout.
-2. Implement network client and checkout coordinator.
-3. Add iOS lifecycle resilience tests and sample app.
+```swift
+let client = EtegramClient()
+let result = try await client.initializePayment(
+	InitializePaymentRequest(
+		projectID: "project_id",
+		publicKey: "public_key",
+		email: "user@example.com",
+		phone: "08012345678",
+		amount: 5000,
+		currency: "NGN",
+		firstname: "Ada",
+		lastname: "Lovelace"
+	)
+)
+```

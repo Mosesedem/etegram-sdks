@@ -1,17 +1,29 @@
-# Etegram Kotlin SDK (Scaffold)
+# Etegram Kotlin SDK
 
-Status: initialized
+Kotlin SDK baseline for initialize flow, typed models, secure reference generation, and structured errors.
 
-## Planned deliverables
+## Included in this package
 
-- Kotlin library module for Maven publishing
-- Coroutines + Flow event stream API
-- Checkout manager via Custom Tabs/WebView
-- Typed sealed result and error hierarchy
-- Android sample app and lifecycle tests
+- Gradle Kotlin/JVM setup
+- `InitializePaymentRequest`, `InitializeResult`, `VerifyResult`
+- `SDKError`
+- `generateTransactionReference`
+- `EtegramClient` initialize implementation with validation and allowlist check
 
-## Next steps
+## Quick usage
 
-1. Create Gradle module and publishing metadata.
-2. Implement API client and checkout manager.
-3. Add instrumented tests for rotation/background behavior.
+```kotlin
+val client = EtegramClient()
+val result = client.initializePayment(
+	InitializePaymentRequest(
+		projectId = "project_id",
+		publicKey = "public_key",
+		email = "user@example.com",
+		phone = "08012345678",
+		amount = 5000,
+		currency = "NGN",
+		firstName = "Ada",
+		lastName = "Lovelace",
+	)
+)
+```

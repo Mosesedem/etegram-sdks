@@ -58,13 +58,16 @@ class CheckoutController {
 
     final String status =
         (callbackUri.queryParameters['status'] ?? '').toLowerCase();
+    final String eventType =
+        (callbackUri.queryParameters['event'] ?? '').toLowerCase();
+    final String signal = eventType.isNotEmpty ? eventType : status;
     final Map<String, Object?> providerPayload = <String, Object?>{
       for (final MapEntry<String, String> entry
           in callbackUri.queryParameters.entries)
         entry.key: entry.value,
     };
 
-    if (status == 'success') {
+    if (signal == 'success' || signal == 'payment.success') {
       _emit(CheckoutEvent(
           type: CheckoutEventType.success,
           reference: reference,
@@ -77,7 +80,9 @@ class CheckoutController {
       return;
     }
 
-    if (status == 'cancel' || status == 'cancelled') {
+    if (signal == 'cancel' ||
+        signal == 'cancelled' ||
+        signal == 'payment.cancel') {
       _emit(CheckoutEvent(
           type: CheckoutEventType.cancel,
           reference: reference,
@@ -91,10 +96,14 @@ class CheckoutController {
       return;
     }
 
+    final String message = callbackUri.queryParameters['message'] ??
+        (signal.isEmpty
+            ? 'checkout callback status is missing'
+            : 'unrecognized checkout callback status: $signal');
+
     final SDKError error = SDKError(
       code: 'CHECKOUT_RUNTIME_ERROR',
-      message:
-          callbackUri.queryParameters['message'] ?? 'checkout callback error',
+      message: message,
       reference: reference,
       details: providerPayload,
     );

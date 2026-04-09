@@ -1,16 +1,29 @@
-# Etegram React Native SDK (Scaffold)
+# Etegram React Native SDK
 
-Status: initialized
+TypeScript-first React Native SDK for Etegram initialize and verify flows.
 
-## Planned deliverables
+## Included in this package
 
-- TypeScript-first RN package with typed events and imperative API
-- Webview/in-app-browser checkout integration
-- Deep-link callback handling for iOS and Android
-- Expo and bare RN sample apps
+- Typed request/response models and `SDKError`
+- `initializePayment` API wrapper
+- `openCheckout` URL launcher using React Native Linking
+- `verifyTransaction` helper
 
-## Next steps
+## Quick usage
 
-1. Add package manifest and TS build config.
-2. Implement checkout launcher and event bridge.
-3. Add Expo + bare sample projects and E2E tests.
+```ts
+import { initializePayment, openCheckout } from "@etegram/react-native-sdk";
+
+const init = await initializePayment({
+  projectID: "project_id",
+  publicKey: "public_key",
+  email: "user@example.com",
+  phone: "08012345678",
+  amount: 5000,
+  currency: "NGN",
+  firstname: "Ada",
+  lastname: "Lovelace",
+});
+
+await openCheckout(init.authorizationUrl);
+```

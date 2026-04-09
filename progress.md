@@ -9,6 +9,10 @@ Last updated: 2026-04-09
 - Multi-SDK scaffolding (Go, Python, Flutter, RN, Kotlin, Swift): In progress
 - Go SDK production track: Completed
 - Flutter SDK production track: Completed
+- Python SDK production track: In progress
+- React Native SDK baseline track: Completed
+- Kotlin SDK baseline track: Completed
+- Swift SDK baseline track: Completed
 
 ## Plan
 
@@ -49,13 +53,14 @@ Last updated: 2026-04-09
 - [x] Go SDK skeleton + initialize/verify + typed errors
 - [x] Go SDK production hardening (validation, retry policy, webhook verification, tests)
 - [x] Python SDK skeleton + sync/async clients + typed models
+- [x] Python SDK hardening pass (currency contract, allowlist checks, verify retries, tests)
 
 5. Begin mobile tracks after foundation release
 
 - [x] Flutter production package (typed models, client, checkout controller, tests)
-- [ ] React Native beta track (scaffold initialized)
-- [ ] Kotlin beta track (scaffold initialized)
-- [ ] Swift beta track (scaffold initialized)
+- [x] React Native baseline package (typed API + initialize/open/verify)
+- [x] Kotlin baseline package (Gradle module + models + client + errors)
+- [x] Swift baseline package (SPM + models + client + errors)
 
 7. CI enforcement
 
@@ -119,6 +124,28 @@ Last updated: 2026-04-09
 - 2026-04-09: Added CI workflow `.github/workflows/go-flutter-ci.yml`:
   - Go: setup-go + `go test ./...`
   - Flutter: setup Flutter + `flutter pub get` + `flutter analyze` + `flutter test`
+- 2026-04-09: Applied cross-framework update pass:
+  - Flutter:
+    - strengthened request validation (`currency` format + callback URL URI check)
+    - tightened checkout URL validation (HTTPS + allowlist)
+    - expanded callback parsing (`event` aliases) and unknown-status deterministic error handling
+    - added callback tests for alias and unknown status paths
+    - validated with `flutter test` (pass)
+  - Python:
+    - expanded contract fields (`currency`, correlation IDs)
+    - added checkout URL HTTPS/allowlist validation
+    - added safe retry behavior for verify in sync and async clients
+    - added injectable HTTP clients and new unit tests for sync/async clients
+    - added package-level `pyrightconfig.json`
+  - React Native:
+    - added package manifest, strict TypeScript config, and typed SDK source
+    - implemented initialize/checkout open/verify helpers and structured SDK errors
+  - Kotlin:
+    - added Gradle module setup and Kotlin source package
+    - implemented typed models, secure reference utility, SDKError, and initialize client baseline
+  - Swift:
+    - added SPM package configuration and source layout
+    - implemented Codable models, SDKError, secure reference utility, and async initialize client baseline
 
 ## Blockers / Decisions Needed
 

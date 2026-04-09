@@ -13,6 +13,7 @@ class InitializePaymentRequest(BaseModel):
     email: str
     phone: str = Field(min_length=3)
     amount: int = Field(gt=0)
+    currency: str = Field(min_length=3, max_length=3)
     first_name: str = Field(min_length=1, alias="firstname")
     last_name: str = Field(min_length=1, alias="lastname")
     reference: Optional[str] = None
@@ -24,12 +25,14 @@ class InitializeResult(BaseModel):
     authorization_url: str = Field(alias="authorizationUrl")
     reference: str
     expires_at: Optional[str] = Field(default=None, alias="expiresAt")
+    correlation_id: Optional[str] = Field(default=None, alias="correlationId")
 
 
 class VerifyResult(BaseModel):
     reference: str
     status: str
     message: Optional[str] = None
+    correlation_id: Optional[str] = Field(default=None, alias="correlationId")
 
 
 class SDKErrorPayload(BaseModel):
