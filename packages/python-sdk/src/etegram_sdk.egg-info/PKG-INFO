@@ -1,0 +1,73 @@
+Metadata-Version: 2.4
+Name: etegram-sdk
+Version: 0.1.0
+Summary: Etegram Python SDK (sync + async)
+Author: Etegram SDK Team
+License: ISC
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: httpx>=0.27.0
+Requires-Dist: pydantic>=2.7.0
+Provides-Extra: dev
+Requires-Dist: pytest>=8.2.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.23.0; extra == "dev"
+Requires-Dist: pytest-httpx>=0.30.0; extra == "dev"
+Requires-Dist: mypy>=1.10.0; extra == "dev"
+
+# Etegram Python SDK (Beta Scaffold)
+
+This package provides sync and async clients for Etegram initialize/verify APIs.
+
+## Install (local scaffold)
+
+```bash
+pip install -e .
+```
+
+## Quick Start (sync)
+
+```python
+from etegram_sdk import EtegramClient, InitializePaymentRequest
+
+client = EtegramClient()
+request = InitializePaymentRequest(
+    projectID="project_id",
+    publicKey="public_key",
+    email="user@example.com",
+    phone="08012345678",
+    amount=5000,
+    currency="NGN",
+    firstname="Ada",
+    lastname="Lovelace",
+)
+result = client.initialize_payment(request)
+print(result.authorization_url, result.reference)
+client.close()
+```
+
+## Quick Start (async)
+
+```python
+import asyncio
+from etegram_sdk import AsyncEtegramClient, InitializePaymentRequest
+
+
+async def run() -> None:
+    client = AsyncEtegramClient()
+    request = InitializePaymentRequest(
+        projectID="project_id",
+        publicKey="public_key",
+        email="user@example.com",
+        phone="08012345678",
+        amount=5000,
+        currency="NGN",
+        firstname="Ada",
+        lastname="Lovelace",
+    )
+    result = await client.initialize_payment(request)
+    print(result.authorization_url, result.reference)
+    await client.aclose()
+
+
+asyncio.run(run())
+```

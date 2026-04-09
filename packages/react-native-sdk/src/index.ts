@@ -59,6 +59,17 @@ export class SDKError extends Error {
 const INIT_BASE_URL = "https://api-checkout.etegram.com";
 const CHECKOUT_ALLOWLIST = new Set(["checkout.etegram.com"]);
 
+function randomUint32Array(length: number): Uint32Array {
+  if (typeof globalThis.crypto?.getRandomValues === "function") {
+    return globalThis.crypto.getRandomValues(new Uint32Array(length));
+  }
+  const out = new Uint32Array(length);
+  for (let i = 0; i < length; i += 1) {
+    out[i] = Math.floor(Math.random() * 0x100000000);
+  }
+  return out;
+}
+
 function assertRequest(payload: InitializePaymentRequest): void {
   if (!payload.projectID.trim()) {
     throw new SDKError({
@@ -93,8 +104,10 @@ function assertRequest(payload: InitializePaymentRequest): void {
 export function generateTransactionReference(length = 20): string {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let out = "ETG";
-  for (let i = 0; i < (length <= 0 ? 20 : length); i += 1) {
-    out += chars[Math.floor(Math.random() * chars.length)];
+  const size = length <= 0 ? 20 : length;
+  const random = randomUint32Array(size);
+  for (let i = 0; i < size; i += 1) {
+    out += chars[random[i] % chars.length];
   }
   return out;
 }
@@ -172,6 +185,28 @@ export async function initializePayment(
 }
 
 export async function openCheckout(authorizationUrl: string): Promise<void> {
+  let parsed: URL;
+  try {
+    parsed = new URL(authorizationUrl);
+  } catch {
+    throw new SDKError({
+      code: "CHECKOUT_URL_INVALID",
+      message: "checkout URL is invalid",
+      retryable: false,
+    });
+  }
+
+  if (
+    parsed.protocol !== "https:" ||
+    !CHECKOUT_ALLOWLIST.has(parsed.hostname.toLowerCase())
+  ) {
+    throw new SDKError({
+      code: "CHECKOUT_URL_NOT_ALLOWED",
+      message: "checkout URL host is not allowlisted",
+      retryable: false,
+    });
+  }
+
   const canOpen = await Linking.canOpenURL(authorizationUrl);
   if (!canOpen) {
     throw new SDKError({

@@ -1,0 +1,13 @@
+#ete-form-builder ul {
+  list-style: none;
+  padding: 0;
+}
+#ete-form-builder li {
+  background: #f9f9f9;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+}
+#ete-form-builder button {
+  margin-left: 10px;
+}

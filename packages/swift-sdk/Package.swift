@@ -11,7 +11,14 @@ let package = Package(
         .library(name: "EtegramSwiftSDK", targets: ["EtegramSwiftSDK"])
     ],
     targets: [
-        .target(name: "EtegramSwiftSDK"),
-        .testTarget(name: "EtegramSwiftSDKTests", dependencies: ["EtegramSwiftSDK"])
+        .target(
+            name: "EtegramSwiftSDK",
+            path: "Sources/EtegramSwiftSDK"
+        ),
+        .testTarget(
+            name: "EtegramSwiftSDKTests",
+            dependencies: ["EtegramSwiftSDK"],
+            path: "Tests/EtegramSwiftSDKTests"
+        )
     ]
 )

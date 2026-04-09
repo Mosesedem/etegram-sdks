@@ -9,10 +9,10 @@ Last updated: 2026-04-09
 - Multi-SDK scaffolding (Go, Python, Flutter, RN, Kotlin, Swift): In progress
 - Go SDK production track: Completed
 - Flutter SDK production track: Completed
-- Python SDK production track: In progress
-- React Native SDK baseline track: Completed
-- Kotlin SDK baseline track: Completed
-- Swift SDK baseline track: Completed
+- Python SDK production track: Completed
+- React Native SDK production track: Completed
+- Kotlin SDK production track: Completed
+- Swift SDK production track: Completed
 
 ## Plan
 
@@ -65,6 +65,7 @@ Last updated: 2026-04-09
 7. CI enforcement
 
 - [x] Add Go + Flutter CI workflow for analyze/test on PRs and pushes
+- [x] Expand CI to Python, React Native, Kotlin, and Swift quality gates
 
 ## Work Log
 
@@ -146,6 +147,20 @@ Last updated: 2026-04-09
   - Swift:
     - added SPM package configuration and source layout
     - implemented Codable models, SDKError, secure reference utility, and async initialize client baseline
+- 2026-04-09: Completed production readiness closure pass:
+  - CI:
+    - upgraded workflow to run Python tests, React Native typecheck, Kotlin test, and Swift build/test in addition to Go and Flutter
+  - React Native:
+    - hardened transaction reference generation using cryptographic randomness when available
+    - added strict checkout URL parsing and HTTPS/allowlist guard before opening external links
+  - Swift:
+    - fixed `Package.swift` target path configuration to prevent overlapping-source failures
+    - added `Tests/EtegramSwiftSDKTests/ReferenceTests.swift` and validated with `swift test` (pass)
+  - Kotlin:
+    - enabled Kotlin serialization plugin and JVM toolchain pinning
+    - added baseline test coverage for reference generation utility
+  - Python:
+    - validated package tests end-to-end via `pytest` (pass)
 
 ## Blockers / Decisions Needed
 

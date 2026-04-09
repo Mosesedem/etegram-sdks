@@ -1,0 +1,91 @@
+/* Reset and base styles to prevent theme interference */
+.etegrampay-form-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff; /* Optional: Adds a clean background */
+  border: 1px solid #ddd; /* Optional: Adds a subtle border */
+  border-radius: 4px; /* Optional: Rounds corners */
+}
+
+/* Ensure form fields stack vertically */
+.etegrampay-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Adds consistent spacing between fields */
+}
+
+/* Style each field container */
+.ete-form-field {
+  margin: 0; /* Reset any inherited margins */
+  padding: 0;
+}
+
+/* Labels */
+.ete-form-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold; /* Optional: Makes labels stand out */
+}
+
+/* Inputs, textareas, and selects */
+.ete-form-field input,
+.ete-form-field textarea,
+.ete-form-field select {
+  width: 100%;
+  padding: 10px;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* Ensures padding doesn’t increase width */
+}
+
+/* Textarea specific */
+.ete-form-field textarea {
+  min-height: 100px; /* Prevents it from being too small */
+  resize: vertical; /* Allows vertical resizing only */
+}
+
+/* Radio and checkbox groups */
+.ete-form-field input[type="radio"],
+.ete-form-field input[type="checkbox"] {
+  width: auto; /* Overrides full-width for radio/checkbox */
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.ete-form-field label[for^="ete_field_"] + input[type="radio"],
+.ete-form-field label[for^="ete_field_"] + input[type="checkbox"] {
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+/* Submit button */
+.ete-submit-button {
+  background: #0073aa;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
+
+.ete-submit-button:hover {
+  background: #005177;
+}
+
+/* Required field indicator */
+.required {
+  color: red;
+  margin-left: 4px;
+}
+
+/* Optional: Add some responsiveness */
+@media (max-width: 600px) {
+  .etegrampay-form-container {
+    margin: 10px;
+    padding: 15px;
+  }
+}
